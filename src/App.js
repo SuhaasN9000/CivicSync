@@ -1,24 +1,32 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import { CivicProvider, useCivic } from './context/CivicContext';
+import LoginScreen from './components/auth/LoginScreen';
+import UserAppContainer from './components/user/UserAppContainer';
+import WorkerAppContainer from './components/worker/WorkerAppContainer';
+import AdminDashboardContainer from './components/admin/AdminDashboardContainer';
+
+function MainApp() {
+  const { currentUser } = useCivic();
+
+  // Always land on the login page if not authenticated
+  if (!currentUser) {
+    return <LoginScreen />;
+  }
+
+  return (
+    <div className="civicsync-portal-root">
+      {currentUser.role === 'citizen' && <UserAppContainer />}
+      {currentUser.role === 'worker' && <WorkerAppContainer />}
+      {currentUser.role === 'admin' && <AdminDashboardContainer />}
+    </div>
+  );
+}
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <CivicProvider>
+      <MainApp />
+    </CivicProvider>
   );
 }
 
