@@ -27,7 +27,7 @@ const TrackComplaintModal = ({ complaint, onClose }) => {
       <div
         className="modal-card"
         onClick={(e) => e.stopPropagation()}
-        style={{ maxWidth: '440px', padding: '0', overflow: 'hidden' }}
+        style={{ maxWidth: '440px', padding: '0', overflowY: 'auto' }}
       >
         {/* Header */}
         <div style={{

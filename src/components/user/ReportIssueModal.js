@@ -49,11 +49,12 @@ const ReportIssueModal = ({ onClose, onComplaintCreated }) => {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!formData.title.trim() || !formData.description.trim()) return;
 
-    const newIssue = addComplaint(formData);
+    const newIssue = await addComplaint(formData);
+    if (!newIssue) return;
     setCreatedComplaint(newIssue);
     setIsSubmitted(true);
   };
@@ -63,7 +64,7 @@ const ReportIssueModal = ({ onClose, onComplaintCreated }) => {
       <div
         className="modal-card"
         onClick={(e) => e.stopPropagation()}
-        style={{ maxWidth: '440px', padding: '0', overflow: 'hidden' }}
+        style={{ maxWidth: '440px', padding: '0', overflowY: 'auto' }}
       >
         {/* Modal Header */}
         <div style={{

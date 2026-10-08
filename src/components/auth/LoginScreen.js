@@ -22,14 +22,16 @@ const LoginScreen = () => {
   const handleVerify = (e) => {
     if (e) e.preventDefault();
     setIsVerifying(true);
-    setTimeout(() => {
-      loginWithOtp({
+    setTimeout(async () => {
+      const user = await loginWithOtp({
         role,
         phone: `+91 ${phone}`,
         name: userName || (role === 'citizen' ? 'Aarav Sharma' : role === 'worker' ? 'Ramesh Patil' : 'Admin S. Mehta'),
         ward: 'Ward 12',
         workerId
       });
+      // On failure, stop the spinner so the error banner is visible and the user can retry
+      if (!user) setIsVerifying(false);
     }, 250);
   };
 
