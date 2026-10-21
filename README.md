@@ -1,70 +1,131 @@
-# Getting Started with Create React App
+# CivicSync
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+CivicSync is a municipal issue and grievance management demo built with React, Express, and MongoDB. It provides separate experiences for citizens, municipal workers, and administrators to report issues and follow their progress.
 
-## Available Scripts
+## Features
 
-In the project directory, you can run:
+- **Citizen portal:** browse community reports, submit an issue with its category, location and optional photo, track its status, and upvote reports.
+- **Worker portal:** view assigned field tasks, update progress, add work notes, and attach resolution proof.
+- **Admin portal:** view complaint and worker information, review issue activity, assign a worker, and update priority or status.
+- **Complaint lifecycle:** reports move through Pending, In Progress, and Resolved, with a timeline of activity.
+- **Responsive views:** citizen and worker screens can be shown in a mobile frame or expanded view.
+- **Sample data:** the app includes example complaints and worker profiles for exploring the demo.
 
-### `npm start`
+## Technology
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- **Frontend:** React 19, Create React App, and Lucide React
+- **Backend:** Node.js, Express 4, and Mongoose
+- **Database:** MongoDB
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Project structure
 
-### `npm test`
+```text
+.
+├── public/                 # Static assets served by the React app
+├── src/
+│   ├── components/         # Citizen, worker, and admin screens
+│   └── context/            # Client-side demo data and state
+└── server/
+    └── src/
+        ├── config/         # MongoDB connection
+        ├── models/         # Mongoose models
+        ├── routes/         # REST API routes
+        └── seed/           # Sample database data
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Prerequisites
 
-### `npm run build`
+- Node.js and npm
+- MongoDB, either a local instance or a MongoDB Atlas cluster
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Run the frontend demo
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+From the repository root:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```bash
+npm install
+npm start
+```
 
-### `npm run eject`
+Open [http://localhost:3000](http://localhost:3000). Use the role options on the login screen to enter the citizen, worker, or admin demo experience. The OTP and role login flows are demonstrations and do not provide production authentication.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+The frontend currently uses sample data and browser `localStorage` for complaints and workers. It does **not** call the Express API yet. As a result, starting the backend does not connect the frontend to MongoDB, and browser demo changes are not persisted in the database.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Run the API
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+1. Install the server dependencies:
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+   ```bash
+   cd server
+   npm install
+   ```
 
-## Learn More
+2. Create `server/.env` from `server/.env.example` and set `MONGO_URI` to your MongoDB connection string:
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+   ```env
+   PORT=5000
+   MONGO_URI=mongodb://127.0.0.1:27017/civicsync
+   CLIENT_ORIGIN=http://localhost:3000
+   ```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+   For MongoDB Atlas, use the connection string supplied by Atlas instead. Keep credentials private and do not commit your `.env` file.
 
-### Code Splitting
+3. Start the API from the `server` directory:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+   ```bash
+   npm run server
+   ```
 
-### Analyzing the Bundle Size
+   The API listens on [http://localhost:5000](http://localhost:5000). It connects to MongoDB before listening and seeds sample data automatically when the workers collection is empty. Check the health endpoint at [http://localhost:5000/api/health](http://localhost:5000/api/health).
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+To run both the React development server and API together, install the server dependencies as above, then run from the repository root:
 
-### Making a Progressive Web App
+```bash
+npm --prefix server run dev
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+The API's `CLIENT_ORIGIN` value controls which frontend origin is allowed by CORS.
 
-### Advanced Configuration
+## Seed data
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+From the `server` directory, run:
 
-### Deployment
+```bash
+npm run seed
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+This **deletes and recreates** the users, workers, complaints, and complaint counter collections with the sample data. The API also exposes `POST /api/admin/reset`, which performs the same reset; use it only with a development database.
 
-### `npm run build` fails to minify
+## API overview
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+All routes are prefixed with `/api`.
+
+| Method | Endpoint | Purpose |
+| --- | --- | --- |
+| `GET` | `/health` | Check that the API is running |
+| `POST` | `/auth/login` | Demo role login |
+| `GET` | `/workers` | List workers |
+| `GET` | `/workers/:id` | Get a worker |
+| `GET` | `/complaints` | List complaints; supports `status`, `ward`, `workerId`, and `citizenEmail` query filters |
+| `GET` | `/complaints/:id` | Get a complaint by its CivicSync ID |
+| `POST` | `/complaints` | Create a complaint |
+| `PATCH` | `/complaints/:id/assign` | Assign a worker and optionally set priority |
+| `PATCH` | `/complaints/:id/status` | Update a complaint's status and add notes or resolution proof |
+| `PATCH` | `/complaints/:id/upvote` | Upvote a complaint |
+| `POST` | `/admin/reset` | Reset the database to sample data (development only) |
+
+The API login route is also a demo: it does not verify OTPs or passwords and is not suitable for production authentication.
+
+## Available frontend scripts
+
+Run these commands from the repository root:
+
+| Command | Description |
+| --- | --- |
+| `npm start` | Start the React development server |
+| `npm test` | Run the Create React App test runner |
+| `npm run build` | Create an optimized production build in `build/` |
+
+## License
+
+No license is currently specified for this repository.
