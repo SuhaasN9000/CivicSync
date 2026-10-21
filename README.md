@@ -100,19 +100,19 @@ This **deletes and recreates** the users, workers, complaints, and complaint cou
 
 All routes are prefixed with `/api`.
 
-| Method | Endpoint | Purpose |
-| --- | --- | --- |
-| `GET` | `/health` | Check that the API is running |
-| `POST` | `/auth/login` | Demo role login |
-| `GET` | `/workers` | List workers |
-| `GET` | `/workers/:id` | Get a worker |
-| `GET` | `/complaints` | List complaints; supports `status`, `ward`, `workerId`, and `citizenEmail` query filters |
-| `GET` | `/complaints/:id` | Get a complaint by its CivicSync ID |
-| `POST` | `/complaints` | Create a complaint |
-| `PATCH` | `/complaints/:id/assign` | Assign a worker and optionally set priority |
-| `PATCH` | `/complaints/:id/status` | Update a complaint's status and add notes or resolution proof |
-| `PATCH` | `/complaints/:id/upvote` | Upvote a complaint |
-| `POST` | `/admin/reset` | Reset the database to sample data (development only) |
+| Method  | Endpoint                 | Purpose                                                                                  |
+| ------- | ------------------------ | ---------------------------------------------------------------------------------------- |
+| `GET`   | `/health`                | Check that the API is running                                                            |
+| `POST`  | `/auth/login`            | Demo role login                                                                          |
+| `GET`   | `/workers`               | List workers                                                                             |
+| `GET`   | `/workers/:id`           | Get a worker                                                                             |
+| `GET`   | `/complaints`            | List complaints; supports `status`, `ward`, `workerId`, and `citizenEmail` query filters |
+| `GET`   | `/complaints/:id`        | Get a complaint by its CivicSync ID                                                      |
+| `POST`  | `/complaints`            | Create a complaint                                                                       |
+| `PATCH` | `/complaints/:id/assign` | Assign a worker and optionally set priority                                              |
+| `PATCH` | `/complaints/:id/status` | Update a complaint's status and add notes or resolution proof                            |
+| `PATCH` | `/complaints/:id/upvote` | Upvote a complaint                                                                       |
+| `POST`  | `/admin/reset`           | Reset the database to sample data (development only)                                     |
 
 The API login route is also a demo: it does not verify OTPs or passwords and is not suitable for production authentication.
 
@@ -120,10 +120,10 @@ The API login route is also a demo: it does not verify OTPs or passwords and is 
 
 Run these commands from the repository root:
 
-| Command | Description |
-| --- | --- |
-| `npm start` | Start the React development server |
-| `npm test` | Run the Create React App test runner |
+| Command         | Description                                      |
+| --------------- | ------------------------------------------------ |
+| `npm start`     | Start the React development server               |
+| `npm test`      | Run the Create React App test runner             |
 | `npm run build` | Create an optimized production build in `build/` |
 
 ## License
