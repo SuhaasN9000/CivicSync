@@ -22,7 +22,7 @@ const AdminComplaintDetailModal = ({ complaint, onClose, onOpenAssignModal }) =>
       <div
         className="modal-card"
         onClick={(e) => e.stopPropagation()}
-        style={{ maxWidth: '640px', padding: '0', overflow: 'hidden' }}
+        style={{ maxWidth: '640px', padding: '0', overflowY: 'auto' }}
       >
         {/* Header */}
         <div style={{
@@ -281,12 +281,13 @@ const AdminComplaintDetailModal = ({ complaint, onClose, onOpenAssignModal }) =>
             </div>
 
             <form onSubmit={handleUpdateStatus} style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-              <div style={{ display: 'flex', gap: '10px' }}>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
                 <select
                   value={overrideStatus}
                   onChange={(e) => setOverrideStatus(e.target.value)}
                   style={{
-                    flex: 1,
+                    flex: '1 1 180px',
+                    minWidth: 0,
                     padding: '8px 12px',
                     borderRadius: '8px',
                     border: '1px solid #CBD5E1',
@@ -305,7 +306,8 @@ const AdminComplaintDetailModal = ({ complaint, onClose, onOpenAssignModal }) =>
                   value={remarks}
                   onChange={(e) => setRemarks(e.target.value)}
                   style={{
-                    flex: 1,
+                    flex: '1 1 160px',
+                    minWidth: 0,
                     padding: '8px 12px',
                     borderRadius: '8px',
                     border: '1px solid #CBD5E1',
