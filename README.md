@@ -125,7 +125,3 @@ Run these commands from the repository root:
 | `npm start`     | Start the React development server               |
 | `npm test`      | Run the Create React App test runner             |
 | `npm run build` | Create an optimized production build in `build/` |
-
-## License
-
-No license is currently specified for this repository.
